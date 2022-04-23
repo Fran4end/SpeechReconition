@@ -30,13 +30,19 @@ class ExampleCustomRule(dragonfly.CompoundRule):
 
 class ExampleDictationRule(dragonfly.MappingRule):
     mapping = {
-        "dictate <text>": dragonfly.Function(lambda text: print("I heard %r!" % str(text))),
+        "desktop":                              dragonfly.Key("w-d"),
+        "open first":                           dragonfly.Key("w-1"),
+        "option":                               dragonfly.Key("a-space"),
+        "down":                                 dragonfly.Key("down"),
+        "up":                                   dragonfly.Key("up"),
+        "enter":                                dragonfly.Key("enter"),
+        "dictate <text>":                       dragonfly.Function(lambda text: print("I heard %r!" % str(text))),
     }
     extras = [ dragonfly.Dictation("text") ]
 
 
 # Load engine before instantiating rules/grammars!
-# Set any configuration options here as keyword arguments.
+# Set any configuration options here as dragonfly.Functionword arguments.
 engine = dragonfly.get_engine("kaldi",
     model_dir='kaldi_model',
     # tmp_dir='kaldi_tmp',  # default for temporary directory
@@ -49,8 +55,7 @@ engine = dragonfly.get_engine("kaldi",
 engine.connect()
 
 grammar = dragonfly.Grammar(name="mygrammar")
-rule = ExampleCustomRule()
-grammar.add_rule(rule)
+grammar.add_rule(ExampleCustomRule())
 grammar.add_rule(ExampleDictationRule())
 grammar.load()
 
